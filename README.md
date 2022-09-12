@@ -26,3 +26,9 @@ Seçilen kategorinin ürünlerini listeleyen bir yapı oluşturdum, bu yapıya e
 - SnapKit
 - UIkit Programmatically
 - MVVM Mimarisine uygun yazılmıştır
+
+## Preview 
+
+
+https://user-images.githubusercontent.com/62101026/189639777-b5e814e6-a695-4cc0-8883-3cc7489b1d89.mp4
+
