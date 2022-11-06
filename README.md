@@ -24,6 +24,7 @@ Seçilen kategorinin ürünlerini listeleyen bir yapı oluşturdum, bu yapıya e
 
 ## Kullandığım Teknolojiler
 - SnapKit
+- Swiftlint
 - UIkit Programmatically
 - MVVM Mimarisine uygun yazılmıştır
 
