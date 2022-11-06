@@ -8,47 +8,42 @@
 import UIKit
 import SnapKit
 
-class HomePageViewController: AppnomiBaseViewController, ViewModelAllCategoriesDelegate {
 
+protocol HomePageInterface: AnyObject {
+    func fetchData(data: CategoriesModel)
+    func prepareCollectionView()
+    func viewDidLoadConfigure()
+    func snapkitConfigure()
+    func applyStyleConfigure()
+}
+
+class HomePageViewController: AppnomiBaseViewController {
 
     let layoutVertical: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
     let layoutHorizantal: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
     let categoryCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout.init())
     var categories = [Categories]()
-    let viewModel = HomePageViewModel()
+
+    private lazy var viewModel = HomePageViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.view = self
         viewModel.delegate = self
-        view.addSubviews(categoryCollectionView)
-        viewModel.getallCategories()
-        collectionViewRegister()
-        applyStyle()
-        setSnapkit()
+        viewModel.viewDidLoad()
+       
 
     }
 
-    private func collectionViewRegister() {
-        layoutVertical.scrollDirection = UICollectionView.ScrollDirection.vertical
-        layoutHorizantal.scrollDirection = UICollectionView.ScrollDirection.horizontal
-        categoryCollectionView.setCollectionViewLayout(layoutVertical, animated: true)
-        categoryCollectionView.register(UINib(nibName: "CategoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "HomeCategoryCell")
-        categoryCollectionView.dataSource = self
-        categoryCollectionView.delegate = self
+     func collectionViewRegister() {
+         viewModel.collectionViewRegister()
     }
     private func applyStyle() {
-        addChild(child)
-        child.view.frame = view.frame
-        view.addSubview(child.view)
-        child.didMove(toParent: self)
+        viewModel.applyStyle()
     }
+    
     private func setSnapkit() {
-        categoryCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(headerLabel.snp.bottom).offset(16)
-            make.right.equalToSuperview().offset(-16)
-            make.left.equalToSuperview().offset(16)
-            make.bottom.equalToSuperview().offset(0)
-        }
+        viewModel.setSnapkit()
     }
 
 }
@@ -62,7 +57,6 @@ extension HomePageViewController: UICollectionViewDataSource, UICollectionViewDe
 
         let collection = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCategoryCell", for: indexPath) as! CategoryCollectionViewCell
         collection.setCollectionView(category: category)
-
         return collection
 
     }
@@ -74,20 +68,67 @@ extension HomePageViewController: UICollectionViewDataSource, UICollectionViewDe
 
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let collection = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCategoryCell", for: indexPath) as! CategoryCollectionViewCell
+        viewModel.didSelectItemAt(collectionView: collectionView, at: indexPath)
         let choisenCategory = categories[indexPath.row]
         makePush(toView: ProductsListViewController(categoryID: choisenCategory.categoryID ?? ""))
-
-
-        collection.isSelected.toggle()
-        print(indexPath.row)
+      
     }
 
 
 }
-extension HomePageViewController {
-    func didFinishedGetAllCategories(data: CategoriesModel) {
 
+extension HomePageViewController: ViewModelHomePageDelegate{
+    func didFinishedGetAllCategories(data: CategoriesModel) {
+        viewModel.didFinishedGetAllCategories(data: data)
+        
+    }
+    
+    func didErrorGetAllCategories(error: CustomError) {
+        print(error)
+    }
+    
+    
+}
+
+extension HomePageViewController:HomePageInterface {
+   
+    
+    func applyStyleConfigure() {
+        addChild(child)
+        child.view.frame = view.frame
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
+    }
+    
+    func snapkitConfigure() {
+        categoryCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(headerLabel.snp.bottom).offset(16)
+            make.right.equalToSuperview().offset(-16)
+            make.left.equalToSuperview().offset(16)
+            make.bottom.equalToSuperview().offset(0)
+        }
+    }
+    
+    func viewDidLoadConfigure() {
+        view.addSubviews(categoryCollectionView)
+        viewModel.getallCategories()
+        collectionViewRegister()
+        applyStyle()
+        setSnapkit()
+    }
+    
+    
+    func prepareCollectionView() {
+        layoutVertical.scrollDirection = UICollectionView.ScrollDirection.vertical
+        layoutHorizantal.scrollDirection = UICollectionView.ScrollDirection.horizontal
+        categoryCollectionView.setCollectionViewLayout(layoutVertical, animated: true)
+        categoryCollectionView.register(UINib(nibName: "CategoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "HomeCategoryCell")
+        categoryCollectionView.dataSource = self
+        categoryCollectionView.delegate = self
+    }
+    
+   
+    func fetchData(data: CategoriesModel) {
         guard let data = data.data else {
             return
         }
@@ -100,10 +141,8 @@ extension HomePageViewController {
             }
         }
     }
-
-    func didErrorGetAllCategories(error: CustomError) {
-        print(error)
-
-    }
+    
+    
+  
 }
 

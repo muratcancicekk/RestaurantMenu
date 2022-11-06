@@ -1,3 +1,19 @@
+//
+//  ss.swift
+//  AppnomiCase
+//
+//  Created by Murat on 5.11.2022.
+//
+
+//
+//  ProductsListViewController.swift
+//  AppnomiCase
+//
+//  Created by Murat Çiçek on 8.09.2022.
+//
+
+
+/*
 import UIKit
 import SnapKit
 
@@ -5,11 +21,6 @@ import SnapKit
 protocol ProductsListInterface {
     func viewDidloadConfigure()
     func getProducts(data: ProductForAnCategory)
-    func collectionViewConfigure()
-    func buttonTapped()
-    func onDoneButtonTappeds()
-    func styleConfigure()
-    func snapkitConfigure()
 
 }
 
@@ -35,27 +46,66 @@ class ProductsListViewController: AppnomiBaseViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.view = self
-        viewModel.delegate = self
         viewModel.viewDidload()
+
+
+
     }
 
     private func collectionViewRegister() {
-        viewModel.collectionViewRegister()
+        layoutVertical.scrollDirection = UICollectionView.ScrollDirection.vertical
+        layoutHorizantal.scrollDirection = UICollectionView.ScrollDirection.horizontal
+        productsCollectionView.setCollectionViewLayout(layoutVertical, animated: true)
+        productsCollectionView.register(UINib(nibName: "ProductsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ProductsCell")
+        productsCollectionView.dataSource = self
+        productsCollectionView.delegate = self
+        productsCollectionView.showsVerticalScrollIndicator = false
     }
     @objc func tappedbtn() {
-        viewModel.tappedbtn()
+        picker = UIPickerView.init()
+        picker.delegate = self
+        picker.dataSource = self
+        picker.backgroundColor = UIColor.white
+        picker.setValue(UIColor.black, forKey: "textColor")
+        picker.autoresizingMask = .flexibleWidth
+        picker.contentMode = .center
+        picker.frame = CGRect.init(x: 0.0, y: UIScreen.main.bounds.size.height - 300, width: UIScreen.main.bounds.size.width, height: 300)
+        self.view.addSubview(picker)
+        toolBar = UIToolbar.init(frame: CGRect.init(x: 0.0, y: UIScreen.main.bounds.size.height - 300, width: UIScreen.main.bounds.size.width, height: 50))
+        toolBar.barStyle = .black
+        toolBar.items = [UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(onDoneButtonTapped))]
+        self.view.addSubview(toolBar)
     }
     @objc func onDoneButtonTapped() {
-        viewModel.onDoneButtonTapped()
+        toolBar.removeFromSuperview()
+        picker.removeFromSuperview()
     }
     private func applyStyle() {
-        viewModel.applyStyle()
+        addChild(child)
+        child.view.frame = view.frame
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
+        self.denemeBtn.addTarget(self, action: #selector(tappedbtn), for: .touchUpInside)
+        self.denemeBtn.setImage(UIImage(named: "filter_icon"), for: .normal)
     }
     private func setSnapkit() {
-        viewModel.setSnapkit()
+        self.denemeBtn.snp.makeConstraints { make in
+            make.top.equalTo(self.headerLabel.snp.bottom).offset(16)
+            make.right.equalToSuperview().offset(-16)
+            make.size.equalTo(CGSize(width: 25, height: 25))
+        }
+        productsCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(denemeBtn.snp.bottom).offset(25)
+            make.right.equalToSuperview().offset(-16)
+            make.left.equalToSuperview().offset(16)
+            make.bottom.equalToSuperview().offset(0)
+
+        }
     }
 
 
@@ -99,69 +149,12 @@ extension ProductsListViewController: UICollectionViewDataSource, UICollectionVi
 
 
 extension ProductsListViewController: ProductsListInterface {
-    func snapkitConfigure() {
-        self.denemeBtn.snp.makeConstraints { make in
-            make.top.equalTo(self.headerLabel.snp.bottom).offset(16)
-            make.right.equalToSuperview().offset(-16)
-            make.size.equalTo(CGSize(width: 25, height: 25))
-        }
-        productsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(denemeBtn.snp.bottom).offset(25)
-            make.right.equalToSuperview().offset(-16)
-            make.left.equalToSuperview().offset(16)
-            make.bottom.equalToSuperview().offset(0)
-
-        }
-    }
-    
-    func styleConfigure() {
-        addChild(child)
-        child.view.frame = view.frame
-        view.addSubview(child.view)
-        child.didMove(toParent: self)
-        self.denemeBtn.addTarget(self, action: #selector(tappedbtn), for: .touchUpInside)
-        self.denemeBtn.setImage(UIImage(named: "filter_icon"), for: .normal)
-    }
-    
-    func onDoneButtonTappeds() {
-        toolBar.removeFromSuperview()
-        picker.removeFromSuperview()
-    }
-    
-    func buttonTapped() {
-        picker = UIPickerView.init()
-        picker.delegate = self
-        picker.dataSource = self
-        picker.backgroundColor = UIColor.white
-        picker.setValue(UIColor.black, forKey: "textColor")
-        picker.autoresizingMask = .flexibleWidth
-        picker.contentMode = .center
-        picker.frame = CGRect.init(x: 0.0, y: UIScreen.main.bounds.size.height - 300, width: UIScreen.main.bounds.size.width, height: 300)
-        self.view.addSubview(picker)
-        toolBar = UIToolbar.init(frame: CGRect.init(x: 0.0, y: UIScreen.main.bounds.size.height - 300, width: UIScreen.main.bounds.size.width, height: 50))
-        toolBar.barStyle = .black
-        toolBar.items = [UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(onDoneButtonTapped))]
-        self.view.addSubview(toolBar)
-    }
-    
-    func collectionViewConfigure() {
-        layoutVertical.scrollDirection = UICollectionView.ScrollDirection.vertical
-        layoutHorizantal.scrollDirection = UICollectionView.ScrollDirection.horizontal
-        productsCollectionView.setCollectionViewLayout(layoutVertical, animated: true)
-        productsCollectionView.register(UINib(nibName: "ProductsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ProductsCell")
-        productsCollectionView.dataSource = self
-        productsCollectionView.delegate = self
-        productsCollectionView.showsVerticalScrollIndicator = false
-    }
-    
     func viewDidloadConfigure() {
-      
         view.addSubviews(productsCollectionView, denemeBtn)
         collectionViewRegister()
         setSnapkit()
         applyStyle()
         viewModel.getProductForAnCategory(with: .productForAnCategorySortTitle(categoryId: categoryID))
-
     }
     func getProducts(data: ProductForAnCategory) {
         guard let data = data.data else {
@@ -197,23 +190,10 @@ extension ProductsListViewController: ProductsListInterface {
         }
 
 
-
-
     }
 
 
 
-
-
-}
-extension ProductsListViewController: ViewModelGetProductFetchDelegate {
-    func didFinishedGetProductForAnCategory(data: ProductForAnCategory) {
-        viewModel.didFinishedGetProductForAnCategory(data: data)
-    }
-
-    func didErrorGetProductForAnCategory(error: CustomError) {
-        viewModel.didErrorGetProductForAnCategory(error: error)
-    }
 
 
 }
@@ -248,3 +228,67 @@ extension ProductsListViewController: UIPickerViewDelegate, UIPickerViewDataSour
 
     }
 }
+
+*/
+
+
+//
+//  ProductViewModel.swift
+//  AppnomiCase
+//
+//  Created by Murat Çiçek on 10.09.2022.
+//
+
+/*
+import Foundation
+import UIKit
+protocol ViewModelGetProductDelegate: AnyObject {
+    var view: ProductsListInterface? { get set }
+    func didFinishedGetProductForAnCategory(data: ProductForAnCategory)
+    func didErrorGetProductForAnCategory(error: CustomError)
+    func viewDidload()
+ 
+
+}
+
+class ProductListViewModel {
+
+
+    weak var delegate: ViewModelGetProductDelegate?
+    var view: ProductsListInterface?
+
+    func getProductForAnCategory(with resquestType: RequestType) {
+        Network.shared.request(with: resquestType) { [weak self] (response: Result<ProductForAnCategory, CustomError>) in
+            guard let self = self else { return }
+            switch response {
+            case .success(let success):
+                self.delegate?.didFinishedGetProductForAnCategory(data: success)
+            case .failure(let failure):
+                self.delegate?.didErrorGetProductForAnCategory(error: failure)
+            }
+        }
+    }
+}
+
+extension ProductListViewModel: ViewModelGetProductDelegate {
+
+
+
+    func didFinishedGetProductForAnCategory(data: ProductForAnCategory) {
+        view?.getProducts(data: data)
+    }
+
+    func didErrorGetProductForAnCategory(error: CustomError) {
+
+    }
+
+    func viewDidload() {
+        view?.viewDidloadConfigure()
+
+    }
+
+
+}
+
+*/
+
