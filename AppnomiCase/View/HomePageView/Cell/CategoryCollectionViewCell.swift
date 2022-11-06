@@ -13,10 +13,6 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     let subLabel = UILabel()
     let rigthIconView = UIImageView()
     let iconView = UIImageView()
-    
-    
-    
-
     override func awakeFromNib() {
         super.awakeFromNib()
         addSubviews(titleLabel,rigthIconView,subLabel,iconView)
@@ -32,7 +28,6 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         self.borderWidth = 0.5
         self.borderColor = .lightGray
         self.cornerRadius = 8
-        
     }
     private func setSnapkit(){
         iconView.snp.makeConstraints { make in
@@ -40,15 +35,10 @@ class CategoryCollectionViewCell: UICollectionViewCell {
             make.top.equalToSuperview().offset(8)
             make.bottom.equalToSuperview().offset(-8)
             make.size.equalTo(CGSize(width: 54, height: 54))
-
-            
         }
-        
-        
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(16)
             make.left.equalTo(iconView.snp.right).offset(16)
-        
         }
         subLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
@@ -58,13 +48,10 @@ class CategoryCollectionViewCell: UICollectionViewCell {
             make.right.equalToSuperview().offset(-30)
             make.top.equalToSuperview().offset(15)
             make.bottom.equalToSuperview().offset(-15)
-           
             make.size.equalTo(CGSize(width: 7, height: 14))
 
         }
-        
     }
-    
     func setCollectionView(category:Categories){
         self.subLabel.text = "Toplam Ürün Sayısı: \(category.totalProducts ?? 0)"
         self.iconView.setImage(with: category.icon)
@@ -72,5 +59,3 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     }
 
 }
-
-

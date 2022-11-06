@@ -7,5 +7,9 @@
 
 import Foundation
 struct FeaturedImage: Codable {
-    let t, n: String?
+    let typ, nyp: String?
+    enum CodingKeys: String, CodingKey {
+        case typ = "t"
+        case nyp = "n"
+    }
 }

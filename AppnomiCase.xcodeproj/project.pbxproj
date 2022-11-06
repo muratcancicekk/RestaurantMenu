@@ -52,7 +52,6 @@
 		A894AADF28CA05680005D611 /* ProductsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A894AADD28CA05680005D611 /* ProductsListViewController.xib */; };
 		A894AAE328CA059E0005D611 /* ProductsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A894AAE128CA059E0005D611 /* ProductsCollectionViewCell.swift */; };
 		A894AAE428CA059E0005D611 /* ProductsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A894AAE228CA059E0005D611 /* ProductsCollectionViewCell.xib */; };
-		FBDA837C29166E3B00AB72C5 /* ss.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDA837B29166E3B00AB72C5 /* ss.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,7 +100,6 @@
 		A894AADD28CA05680005D611 /* ProductsListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductsListViewController.xib; sourceTree = "<group>"; };
 		A894AAE128CA059E0005D611 /* ProductsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsCollectionViewCell.swift; sourceTree = "<group>"; };
 		A894AAE228CA059E0005D611 /* ProductsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductsCollectionViewCell.xib; sourceTree = "<group>"; };
-		FBDA837B29166E3B00AB72C5 /* ss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ss.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -324,7 +322,6 @@
 			children = (
 				A894AAE128CA059E0005D611 /* ProductsCollectionViewCell.swift */,
 				A894AAE228CA059E0005D611 /* ProductsCollectionViewCell.xib */,
-				FBDA837B29166E3B00AB72C5 /* ss.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -339,6 +336,7 @@
 				A853065528C9EF9D009B5041 /* Sources */,
 				A853065628C9EF9D009B5041 /* Frameworks */,
 				A853065728C9EF9D009B5041 /* Resources */,
+				FBC1125C2917D3F30038CADD /* Swiftlint */,
 			);
 			buildRules = (
 			);
@@ -409,6 +407,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		FBC1125C2917D3F30038CADD /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A853065528C9EF9D009B5041 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -426,7 +445,6 @@
 				A853068628C9F207009B5041 /* AppnomiBaseViewController.swift in Sources */,
 				A853068928C9F25E009B5041 /* UIView+Extension.swift in Sources */,
 				A81F66C128CD0EB800367C4B /* CustomErrorModel.swift in Sources */,
-				FBDA837C29166E3B00AB72C5 /* ss.swift in Sources */,
 				A81F66E328CD167700367C4B /* ProductViewModel.swift in Sources */,
 				A81F66D328CD0F4500367C4B /* SingleProductDetailModel.swift in Sources */,
 				A894AADE28CA05680005D611 /* ProductsListViewController.swift in Sources */,

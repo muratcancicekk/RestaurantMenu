@@ -10,7 +10,6 @@ protocol ProductsListInterface {
     func onDoneButtonTappeds()
     func styleConfigure()
     func snapkitConfigure()
-
 }
 
 class ProductsListViewController: AppnomiBaseViewController {
@@ -68,21 +67,17 @@ extension ProductsListViewController: UICollectionViewDataSource, UICollectionVi
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-        let collection = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductsCell", for: indexPath) as! ProductsCollectionViewCell
+        let collection = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductsCell", for: indexPath) as? ProductsCollectionViewCell
         let product = products[indexPath.row]
-        collection.setCollectionView(product: product)
+        collection?.setCollectionView(product: product)
 
-        return collection
+        return collection!
 
     }
-
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         return CGSize(width: UIScreen.width * 0.4, height: UIScreen.height * 0.43)
-
-
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
@@ -94,10 +89,6 @@ extension ProductsListViewController: UICollectionViewDataSource, UICollectionVi
     }
 
 }
-
-
-
-
 extension ProductsListViewController: ProductsListInterface {
     func snapkitConfigure() {
         self.denemeBtn.snp.makeConstraints { make in
@@ -113,7 +104,6 @@ extension ProductsListViewController: ProductsListInterface {
 
         }
     }
-    
     func styleConfigure() {
         addChild(child)
         child.view.frame = view.frame
@@ -122,12 +112,10 @@ extension ProductsListViewController: ProductsListInterface {
         self.denemeBtn.addTarget(self, action: #selector(tappedbtn), for: .touchUpInside)
         self.denemeBtn.setImage(UIImage(named: "filter_icon"), for: .normal)
     }
-    
     func onDoneButtonTappeds() {
         toolBar.removeFromSuperview()
         picker.removeFromSuperview()
     }
-    
     func buttonTapped() {
         picker = UIPickerView.init()
         picker.delegate = self
@@ -143,7 +131,6 @@ extension ProductsListViewController: ProductsListInterface {
         toolBar.items = [UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(onDoneButtonTapped))]
         self.view.addSubview(toolBar)
     }
-    
     func collectionViewConfigure() {
         layoutVertical.scrollDirection = UICollectionView.ScrollDirection.vertical
         layoutHorizantal.scrollDirection = UICollectionView.ScrollDirection.horizontal
@@ -153,9 +140,7 @@ extension ProductsListViewController: ProductsListInterface {
         productsCollectionView.delegate = self
         productsCollectionView.showsVerticalScrollIndicator = false
     }
-    
     func viewDidloadConfigure() {
-      
         view.addSubviews(productsCollectionView, denemeBtn)
         collectionViewRegister()
         setSnapkit()

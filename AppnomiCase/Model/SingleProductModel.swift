@@ -36,7 +36,9 @@ struct SingleProductModel: Codable {
         case categoryID = "categoryId"
         case isUnLimitedStock, title, featuredImage, images
         case datumDescription = "description"
-        case stock, stockCode, price, currency, maxQuantityPerOrder, itemType, campaignPrice, shippingPrice, orderIndex, isPublished, isActive, publishmentDate, endDate, createDate, updateDate, useFixPrice, brand
+        case stock, stockCode, price, currency, maxQuantityPerOrder,
+             itemType, campaignPrice, shippingPrice, orderIndex, isPublished,
+             isActive, publishmentDate, endDate, createDate, updateDate, useFixPrice, brand
         case brandID = "brandId"
     }
 }

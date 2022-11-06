@@ -14,8 +14,6 @@ struct Categories: Codable {
     let createDate, updateDate: String?
     let totalProducts: Int?
     let isActive: Bool?
-   
-
     enum CodingKeys: String, CodingKey {
         case categoryID = "categoryId"
         case name, icon, orderIndex, createDate, updateDate, totalProducts, isActive

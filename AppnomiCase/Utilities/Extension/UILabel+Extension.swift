@@ -15,6 +15,7 @@ extension UILabel {
         self.textAlignment = textAlignment
         self.textColor = color
         self.font = fontSize
+        self.numberOfLines = 0
     }
     
     

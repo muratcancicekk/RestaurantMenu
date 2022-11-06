@@ -44,8 +44,8 @@ class HomePageViewModel {
 }
 extension HomePageViewModel: ViewModelAllCategoriesDelegate {
     func didSelectItemAt(collectionView: UICollectionView,at indexPath: IndexPath) {
-        let collection = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCategoryCell", for: indexPath) as! CategoryCollectionViewCell
-        collection.isSelected.toggle()
+        let collection = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCategoryCell", for: indexPath) as? CategoryCollectionViewCell
+        collection?.isSelected.toggle()
         print(indexPath.row)
     }
 
@@ -72,9 +72,5 @@ extension HomePageViewModel: ViewModelAllCategoriesDelegate {
     }
 
     func didErrorGetAllCategories(error: CustomError) {
-
-
     }
-
-
 }

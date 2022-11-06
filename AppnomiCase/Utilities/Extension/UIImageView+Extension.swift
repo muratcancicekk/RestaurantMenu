@@ -15,13 +15,10 @@ extension UIImageView{
         self.clipsToBounds = true
         self.sizeToFit()
     }
-    
     func setImage(with urlString: String?) {
         guard let urlString = urlString, let url = URL(string: urlString) else {
             return
         }
         self.kf.setImage(with: url)
     }
-    
 }
-

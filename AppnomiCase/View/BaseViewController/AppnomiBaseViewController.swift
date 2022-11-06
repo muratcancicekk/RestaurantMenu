@@ -17,8 +17,6 @@ class AppnomiBaseViewController: UIViewController {
 
         applyStyle()
         setSnapkit()
-
-
     }
     private func applyStyle() {
         headerLabel.styleLabel(title: "Appnomi", textAlignment: .center, color: .black, fontSize: UIFont.systemFont(ofSize: 16))
@@ -52,6 +50,4 @@ class AppnomiBaseViewController: UIViewController {
         child.view.removeFromSuperview()
         child.removeFromParent()
     }
-
-
 }

@@ -7,14 +7,22 @@
 
 import Foundation
 
-protocol ViewModelSingleProductDelegate : AnyObject {
+protocol DetailsViewModelDelegate {
+    var view: DetailsViewInterface? { get set }
+    func viewDidLoad()
+    func scroll()
+    func applyStyle()
+    func setSnapkit()
+}
+
+protocol ViewModelSingleProductFetch {
     func didFinishedGetSingleProduct(data: SingleProductDetailModel)
     func didErrorGetSingleProducts(error: CustomError)
 }
 
-class DetailsViewModel{
-    
-    var delegate : ViewModelSingleProductDelegate?
+class DetailsViewModel {
+    weak var view:DetailsViewInterface?
+    var delegate: ViewModelSingleProductFetch?
 
     func getSingleProduct(productId: String) {
         Network.shared.request(with: .productDetail(productId: productId)) { [weak self] (response: Result<SingleProductDetailModel, CustomError>) in
@@ -27,4 +35,24 @@ class DetailsViewModel{
             }
         }
     }
+}
+
+extension DetailsViewModel:DetailsViewModelDelegate{
+    func setSnapkit() {
+        view?.snapkitConfigure()
+    }
+    
+    func applyStyle() {
+        view?.styleConfigure()
+    }
+    
+    func scroll() {
+        view?.scrollConfigure()
+    }
+    
+    func viewDidLoad() {
+        view?.viewDidLoadConfigure()
+    }
+    
+    
 }

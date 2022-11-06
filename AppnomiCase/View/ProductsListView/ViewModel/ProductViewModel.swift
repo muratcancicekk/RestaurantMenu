@@ -5,7 +5,6 @@
 //  Created by Murat Çiçek on 10.09.2022.
 //
 
-
 import Foundation
 import UIKit
 protocol ViewModelGetProductDelegate: AnyObject {
@@ -25,8 +24,6 @@ protocol ViewModelGetProductFetchDelegate {
 }
 
 class ProductListViewModel {
-
-
     var delegate: ViewModelGetProductFetchDelegate?
     var view: ProductsListInterface?
 
@@ -47,26 +44,18 @@ extension ProductListViewModel: ViewModelGetProductDelegate {
     func setSnapkit() {
         view?.snapkitConfigure()
     }
-    
     func applyStyle() {
         view?.styleConfigure()
     }
-    
     func onDoneButtonTapped() {
         view?.onDoneButtonTappeds()
     }
-    
     func tappedbtn() {
         view?.buttonTapped()
     }
-    
     func collectionViewRegister() {
         view?.collectionViewConfigure()
     }
-    
-
-
-
     func didFinishedGetProductForAnCategory(data: ProductForAnCategory) {
         view?.getProducts(data: data)
     }
@@ -79,6 +68,4 @@ extension ProductListViewModel: ViewModelGetProductDelegate {
         view?.viewDidloadConfigure()
 
     }
-
-
 }

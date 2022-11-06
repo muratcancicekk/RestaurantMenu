@@ -8,6 +8,14 @@
 import UIKit
 import SnapKit
 
+protocol DetailsViewInterface: AnyObject {
+    func viewDidLoadConfigure()
+    func scrollConfigure()
+    func styleConfigure()
+    func snapkitConfigure()
+
+}
+
 class DetailsViewController: AppnomiBaseViewController {
     private let scrollView = UIScrollView()
     private let uiView = UIView()
@@ -30,51 +38,30 @@ class DetailsViewController: AppnomiBaseViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.view = self
         viewModel.delegate = self
-        view.addSubviews(scrollView)
-        scrollView.addSubview(uiView)
-        uiView.addSubviews(descriptionLabel, imageView, detailsHeaderLabel, detailsPriceLabel, detailsDiscountedPriceLabel, stockIcon, stockLabel)
-        scroll()
-        applyStyle()
-        setSnapkit()
-        viewModel.getSingleProduct(productId: productID)
-
+        viewModel.viewDidLoad()
     }
     private func scroll() {
-        scrollView.alwaysBounceVertical = true
-        scrollView.scrollsToTop = false
+        viewModel.scroll()
     }
     private func applyStyle() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(shopTapped(tapGestureRecognizer:)))
-        logo.isUserInteractionEnabled = true
-        logo.addGestureRecognizer(tapGestureRecognizer)
-        logo.image = UIImage(named: "basket_icon")
-        imageView.image = UIImage(named: "appnomi_logo")
-        imageView.contentMode = .scaleToFill
-        detailsHeaderLabel.numberOfLines = 0
-        detailsHeaderLabel.styleLabel(title: "Deneme Baslik", textAlignment: .center, color: .black, fontSize: UIFont.systemFont(ofSize: 24))
-        detailsPriceLabel.styleLabel(title: "50", textAlignment: .center, color: .lightGray, fontSize: UIFont.systemFont(ofSize: 20))
-        detailsDiscountedPriceLabel.styleLabel(title: "30", textAlignment: .center, color: .black, fontSize: UIFont.systemFont(ofSize: 20))
-        scrollView.showsVerticalScrollIndicator = false
-        descriptionLabel.styleLabel(title: "sundae", textAlignment: .center, color: .black, fontSize: UIFont.systemFont(ofSize: 20))
-        descriptionLabel.numberOfLines = 0
-        stockIcon.image = UIImage(named: "stock_icon")?.withRenderingMode(.alwaysTemplate)
-        stockIcon.contentMode = .scaleToFill
-        stockIcon.tintColor = .green
-        stockLabel.styleLabel(title: "Stokta var", textAlignment: .center, color: .green, fontSize: UIFont.systemFont(ofSize: 18))
-        addChild(child)
-        child.view.frame = view.frame
-        view.addSubview(child.view)
-        child.didMove(toParent: self)
-
+        viewModel.applyStyle()
+    }
+    private func setSnapkit() {
+        viewModel.setSnapkit()
 
     }
-  
-    private func setSnapkit() {
+    @objc func shopTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        print("Sepete eklendi")
+    }
+}
+
+extension DetailsViewController: DetailsViewInterface {
+    func snapkitConfigure() {
         scrollView.snp.makeConstraints { make in
             make.top.equalTo(headerLabel.snp.bottom).offset(0)
             make.right.equalToSuperview().offset(-35)
@@ -128,15 +115,49 @@ class DetailsViewController: AppnomiBaseViewController {
             make.top.equalTo(detailsDiscountedPriceLabel.snp.bottom).offset(15)
             make.left.equalTo(stockIcon.snp.right).offset(15)
         }
+    }
 
+    func styleConfigure() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(shopTapped(tapGestureRecognizer:)))
+        logo.isUserInteractionEnabled = true
+        logo.addGestureRecognizer(tapGestureRecognizer)
+        logo.image = UIImage(named: "basket_icon")
+        imageView.image = UIImage(named: "appnomi_logo")
+        imageView.contentMode = .scaleToFill
+        detailsHeaderLabel.styleLabel(title: "Deneme Baslik", textAlignment: .center, color: .black, fontSize: UIFont.systemFont(ofSize: 24))
+        detailsPriceLabel.styleLabel(title: "50", textAlignment: .center, color: .lightGray, fontSize: UIFont.systemFont(ofSize: 20))
+        detailsDiscountedPriceLabel.styleLabel(title: "30", textAlignment: .center, color: .black, fontSize: UIFont.systemFont(ofSize: 20))
+        scrollView.showsVerticalScrollIndicator = false
+        descriptionLabel.styleLabel(title: "sundae", textAlignment: .center, color: .black, fontSize: UIFont.systemFont(ofSize: 20))
+        stockIcon.image = UIImage(named: "stock_icon")?.withRenderingMode(.alwaysTemplate)
+        stockIcon.contentMode = .scaleToFill
+        stockIcon.tintColor = .green
+        stockLabel.styleLabel(title: "Stokta var", textAlignment: .center, color: .green, fontSize: UIFont.systemFont(ofSize: 18))
+        addChild(child)
+        child.view.frame = view.frame
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
     }
-    @objc func shopTapped(tapGestureRecognizer: UITapGestureRecognizer)
-    {
-        print("Sepete eklendi")
+
+    func scrollConfigure() {
+        scrollView.alwaysBounceVertical = true
+        scrollView.scrollsToTop = false
     }
+
+    func viewDidLoadConfigure() {
+        view.addSubviews(scrollView)
+        scrollView.addSubview(uiView)
+        uiView.addSubviews(descriptionLabel, imageView, detailsHeaderLabel, detailsPriceLabel, detailsDiscountedPriceLabel, stockIcon, stockLabel)
+        scroll()
+        applyStyle()
+        setSnapkit()
+        viewModel.getSingleProduct(productId: productID)
+    }
+
+
 }
 
-extension DetailsViewController: ViewModelSingleProductDelegate {
+extension DetailsViewController: ViewModelSingleProductFetch {
     func didFinishedGetSingleProduct(data: SingleProductDetailModel) {
         guard let data = data.data else {
             return
@@ -155,7 +176,7 @@ extension DetailsViewController: ViewModelSingleProductDelegate {
             self.descriptionLabel.text = data.datumDescription?.htmlToAttributedString?.string
             self.stockLabel.text = data.stock?.toString ?? ""
             self.detailsDiscountedPriceLabel.text = data.campaignPrice?.toString ?? "0" + " USD"
-            self.imageView.setImage(with: data.images?.first?.n)
+            self.imageView.setImage(with: data.images?.first?.nyp)
             if data.campaignPrice == nil {
                 self.detailsDiscountedPriceLabel.isHidden = true
                 self.detailsPriceLabel.textColor = .black
@@ -174,6 +195,4 @@ extension DetailsViewController: ViewModelSingleProductDelegate {
     func didErrorGetSingleProducts(error: CustomError) {
 
     }
-
-
 }
