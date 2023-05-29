@@ -18,14 +18,16 @@ protocol ViewModelAllCategoriesDelegate {
     func viewDidLoad()
     func setSnapkit()
     func applyStyle()
-    func didSelectItemAt(collectionView: UICollectionView,at indexPath: IndexPath)
+    func didSelectItemAt(collectionView: UICollectionView, at indexPath: IndexPath)
 }
 protocol ViewModelHomePageDelegate {
     func didFinishedGetAllCategories(data: CategoriesModel)
     func didErrorGetAllCategories(error: CustomError)
 }
-
-class HomePageViewModel {
+enum HomePageViewState {
+    
+}
+class HomePageViewModel: BaseViewModel {
 
     weak var view: HomePageInterface?
     var delegate: ViewModelHomePageDelegate?
@@ -43,7 +45,7 @@ class HomePageViewModel {
 
 }
 extension HomePageViewModel: ViewModelAllCategoriesDelegate {
-    func didSelectItemAt(collectionView: UICollectionView,at indexPath: IndexPath) {
+    func didSelectItemAt(collectionView: UICollectionView, at indexPath: IndexPath) {
         let collection = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCategoryCell", for: indexPath) as? CategoryCollectionViewCell
         collection?.isSelected.toggle()
         print(indexPath.row)

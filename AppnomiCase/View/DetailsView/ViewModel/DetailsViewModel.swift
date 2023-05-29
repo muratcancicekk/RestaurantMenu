@@ -19,9 +19,12 @@ protocol ViewModelSingleProductFetch {
     func didFinishedGetSingleProduct(data: SingleProductDetailModel)
     func didErrorGetSingleProducts(error: CustomError)
 }
+enum DetailsViewState {
+    
+}
 
-class DetailsViewModel {
-    weak var view:DetailsViewInterface?
+class DetailsViewModel: BaseViewModel {
+    weak var view: DetailsViewInterface?
     var delegate: ViewModelSingleProductFetch?
 
     func getSingleProduct(productId: String) {
@@ -37,22 +40,17 @@ class DetailsViewModel {
     }
 }
 
-extension DetailsViewModel:DetailsViewModelDelegate{
+extension DetailsViewModel: DetailsViewModelDelegate {
     func setSnapkit() {
         view?.snapkitConfigure()
     }
-    
     func applyStyle() {
         view?.styleConfigure()
     }
-    
     func scroll() {
         view?.scrollConfigure()
     }
-    
     func viewDidLoad() {
         view?.viewDidLoadConfigure()
     }
-    
-    
 }

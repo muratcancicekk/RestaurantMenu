@@ -22,8 +22,10 @@ protocol ViewModelGetProductFetchDelegate {
     func didFinishedGetProductForAnCategory(data: ProductForAnCategory)
     func didErrorGetProductForAnCategory(error: CustomError)
 }
-
-class ProductListViewModel {
+enum ProductListViewState {
+    
+}
+class ProductListViewModel: BaseViewModel {
     var delegate: ViewModelGetProductFetchDelegate?
     var view: ProductsListInterface?
 

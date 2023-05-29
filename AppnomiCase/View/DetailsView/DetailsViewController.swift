@@ -13,10 +13,9 @@ protocol DetailsViewInterface: AnyObject {
     func scrollConfigure()
     func styleConfigure()
     func snapkitConfigure()
-
 }
 
-class DetailsViewController: AppnomiBaseViewController {
+class DetailsViewController: AppnomiBaseViewController<DetailsViewModel, DetailsViewState> {
     private let scrollView = UIScrollView()
     private let uiView = UIView()
     private let imageView = UIImageView()
@@ -44,16 +43,6 @@ class DetailsViewController: AppnomiBaseViewController {
         viewModel.delegate = self
         viewModel.viewDidLoad()
     }
-    private func scroll() {
-        viewModel.scroll()
-    }
-    private func applyStyle() {
-        viewModel.applyStyle()
-    }
-    private func setSnapkit() {
-        viewModel.setSnapkit()
-
-    }
     @objc func shopTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
         print("Sepete eklendi")
@@ -74,7 +63,6 @@ extension DetailsViewController: DetailsViewInterface {
             make.right.equalTo(scrollView.snp.right)
             make.left.equalTo(scrollView.snp.left)
             make.size.equalTo(CGSize(width: 350, height: 1200))
-
         }
 
         imageView.snp.makeConstraints { make in
@@ -153,8 +141,6 @@ extension DetailsViewController: DetailsViewInterface {
         setSnapkit()
         viewModel.getSingleProduct(productId: productID)
     }
-
-
 }
 
 extension DetailsViewController: ViewModelSingleProductFetch {
@@ -162,8 +148,6 @@ extension DetailsViewController: ViewModelSingleProductFetch {
         guard let data = data.data else {
             return
         }
-        DispatchQueue.main.async {
-
             if data.campaignPrice != nil {
                 let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: (data.price?.toString ?? "") + "$")
                 attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSRange(location: 0, length: attributeString.length))
@@ -188,11 +172,20 @@ extension DetailsViewController: ViewModelSingleProductFetch {
             }
             Logger.log(type: .warning, text: data.datumDescription ?? "")
             self.stopAndHideSpinner()
-        }
-
     }
 
     func didErrorGetSingleProducts(error: CustomError) {
 
+    }
+}
+extension DetailsViewController {
+    private func scroll() {
+        viewModel.scroll()
+    }
+    private func applyStyle() {
+        viewModel.applyStyle()
+    }
+    private func setSnapkit() {
+        viewModel.setSnapkit()
     }
 }

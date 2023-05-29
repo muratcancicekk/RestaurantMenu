@@ -12,7 +12,7 @@ protocol ProductsListInterface {
     func snapkitConfigure()
 }
 
-class ProductsListViewController: AppnomiBaseViewController {
+class ProductsListViewController: AppnomiBaseViewController<ProductListViewModel, ProductListViewState> {
     private let layoutVertical: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
     private let layoutHorizantal: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
     private let productsCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout.init())
@@ -56,31 +56,21 @@ class ProductsListViewController: AppnomiBaseViewController {
     private func setSnapkit() {
         viewModel.setSnapkit()
     }
-
-
-
-
 }
 extension ProductsListViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return products.count
     }
-
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let collection = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductsCell", for: indexPath) as? ProductsCollectionViewCell
         let product = products[indexPath.row]
         collection?.setCollectionView(product: product)
-
         return collection!
-
     }
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
         return CGSize(width: UIScreen.width * 0.4, height: UIScreen.height * 0.43)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
         let choisenProduct = products[indexPath.row]
         guard let productID = choisenProduct.id else {
             return
@@ -101,7 +91,6 @@ extension ProductsListViewController: ProductsListInterface {
             make.right.equalToSuperview().offset(-16)
             make.left.equalToSuperview().offset(16)
             make.bottom.equalToSuperview().offset(0)
-
         }
     }
     func styleConfigure() {
@@ -180,16 +169,7 @@ extension ProductsListViewController: ProductsListInterface {
                 self.stopAndHideSpinner()
             }
         }
-
-
-
-
     }
-
-
-
-
-
 }
 extension ProductsListViewController: ViewModelGetProductFetchDelegate {
     func didFinishedGetProductForAnCategory(data: ProductForAnCategory) {
@@ -199,8 +179,6 @@ extension ProductsListViewController: ViewModelGetProductFetchDelegate {
     func didErrorGetProductForAnCategory(error: CustomError) {
         viewModel.didErrorGetProductForAnCategory(error: error)
     }
-
-
 }
 
 extension ProductsListViewController: UIPickerViewDelegate, UIPickerViewDataSource {

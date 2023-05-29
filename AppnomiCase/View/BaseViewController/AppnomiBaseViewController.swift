@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AppnomiBaseViewController: UIViewController {
+class AppnomiBaseViewController<T: BaseViewModel, S>: UIViewController {
     let headerLabel = UILabel()
     let logo = UIImageView()
     let child = SpinnerViewController()
@@ -19,9 +19,11 @@ class AppnomiBaseViewController: UIViewController {
         setSnapkit()
     }
     private func applyStyle() {
-        headerLabel.styleLabel(title: "Appnomi", textAlignment: .center, color: .black, fontSize: UIFont.systemFont(ofSize: 16))
+        headerLabel.styleLabel(title: "Appnomi",
+                               textAlignment: .center,
+                               color: .black,
+                               fontSize: UIFont.systemFont(ofSize: 16))
         logo.image = UIImage(named: "appnomi_logo")
-
     }
     private func setSnapkit() {
         headerLabel.snp.makeConstraints { make in
@@ -34,7 +36,6 @@ class AppnomiBaseViewController: UIViewController {
             make.size.equalTo(CGSize(width: 25, height: 25))
 
         }
-
     }
     func makePush(toView: UIViewController)
     {

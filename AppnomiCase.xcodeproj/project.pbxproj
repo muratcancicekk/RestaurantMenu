@@ -52,6 +52,7 @@
 		A894AADF28CA05680005D611 /* ProductsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A894AADD28CA05680005D611 /* ProductsListViewController.xib */; };
 		A894AAE328CA059E0005D611 /* ProductsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A894AAE128CA059E0005D611 /* ProductsCollectionViewCell.swift */; };
 		A894AAE428CA059E0005D611 /* ProductsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A894AAE228CA059E0005D611 /* ProductsCollectionViewCell.xib */; };
+		FB7EE5B32A2524A70026B29F /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7EE5B22A2524A70026B29F /* BaseViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +101,7 @@
 		A894AADD28CA05680005D611 /* ProductsListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductsListViewController.xib; sourceTree = "<group>"; };
 		A894AAE128CA059E0005D611 /* ProductsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsCollectionViewCell.swift; sourceTree = "<group>"; };
 		A894AAE228CA059E0005D611 /* ProductsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductsCollectionViewCell.xib; sourceTree = "<group>"; };
+		FB7EE5B22A2524A70026B29F /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -293,6 +295,7 @@
 			children = (
 				A853068428C9F207009B5041 /* AppnomiBaseViewController.swift */,
 				A853068528C9F207009B5041 /* AppnomiBaseViewController.xib */,
+				FB7EE5B22A2524A70026B29F /* BaseViewModel.swift */,
 			);
 			path = BaseViewController;
 			sourceTree = "<group>";
@@ -464,6 +467,7 @@
 				A81F66BB28CD0E5500367C4B /* Network.swift in Sources */,
 				A81F66DD28CD0FFD00367C4B /* Double+Extension.swift in Sources */,
 				A81F66C728CD0EE900367C4B /* ProductForAnCategory.swift in Sources */,
+				FB7EE5B32A2524A70026B29F /* BaseViewModel.swift in Sources */,
 				A853065F28C9EF9E009B5041 /* SceneDelegate.swift in Sources */,
 				A81F66D128CD0F3900367C4B /* Meta.swift in Sources */,
 				A81F66CF28CD0F2700367C4B /* Category.swift in Sources */,

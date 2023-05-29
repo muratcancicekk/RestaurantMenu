@@ -7,6 +7,16 @@
 
 import Foundation
 
+// MARK: - NetworkError
+enum NetworkError {
+    case requestFailure(String)
+    case unknown(String)
+    case noJSONData(String)
+    case serverFailure(String)
+    case userNotExist(String)
+    case processNotAccepted(String)
+}
+
 struct Network {
     static let shared = Network()
 

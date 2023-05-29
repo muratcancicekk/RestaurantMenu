@@ -16,7 +16,7 @@ protocol HomePageInterface: AnyObject {
     func applyStyleConfigure()
 }
 
-class HomePageViewController: AppnomiBaseViewController {
+class HomePageViewController: AppnomiBaseViewController<HomePageViewModel, HomePageViewState> {
 
     let layoutVertical: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
     let layoutHorizantal: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
@@ -64,7 +64,8 @@ extension HomePageViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.didSelectItemAt(collectionView: collectionView, at: indexPath)
         let choisenCategory = categories[indexPath.row]
-        makePush(toView: ProductsListViewController(categoryID: choisenCategory.categoryID ?? ""))
+        // TODO: Will be held
+       // makePush(toView: ProductsListViewController(categoryID: choisenCategory.categoryID ?? ""))
     }
 }
 
