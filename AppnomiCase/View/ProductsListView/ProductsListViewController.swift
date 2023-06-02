@@ -1,69 +1,39 @@
 import UIKit
 import SnapKit
 
-
-protocol ProductsListInterface {
-    func viewDidloadConfigure()
-    func getProducts(data: ProductForAnCategory)
-    func collectionViewConfigure()
-    func buttonTapped()
-    func onDoneButtonTappeds()
-    func styleConfigure()
-    func snapkitConfigure()
-}
-
 class ProductsListViewController: AppnomiBaseViewController<ProductListViewModel, ProductListViewState> {
     private let layoutVertical: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
     private let layoutHorizantal: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
     private let productsCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout.init())
     private var picker: UIPickerView = UIPickerView()
-    private let categoryID: String
-    private lazy var viewModel = ProductListViewModel()
-    private var products = [SingleProductModel]()
-    private let filterValues = ["Alfabetik A-Z", "Alfabetik Z-A", "Fiyat Artan", "Fiyat Azalan", "Yeniden Eskiye", "Eskiden Yeniye"]
+    private let filterValues = ["Alfabetik A-Z", "Alfabetik Z-A",
+                                "Fiyat Artan",
+                                "Fiyat Azalan",
+                                "Yeniden Eskiye",
+                                "Eskiden Yeniye"]
     var denemeBtn = UIButton()
     var toolBar = UIToolbar()
     var selected = ""
-
-    init(categoryID: String) {
-        self.categoryID = categoryID
-        super.init(nibName: nil, bundle: nil)
-
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.view = self
-        viewModel.delegate = self
-        viewModel.viewDidload()
+        viewDidloadConfigure()
     }
-
-    private func collectionViewRegister() {
-        viewModel.collectionViewRegister()
-    }
-    @objc func tappedbtn() {
-        viewModel.tappedbtn()
-    }
-    @objc func onDoneButtonTapped() {
-        viewModel.onDoneButtonTapped()
-    }
-    private func applyStyle() {
-        viewModel.applyStyle()
-    }
-    private func setSnapkit() {
-        viewModel.setSnapkit()
+    override func didStateChanged(oldState: ProductListViewState?, newState: ProductListViewState) {
+        super.didStateChanged(oldState: oldState, newState: newState)
+        switch newState {
+        case .productListDidLoad:
+            self.stopAndHideSpinner()
+            productsCollectionView.reloadData()
+        }
     }
 }
-extension ProductsListViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension ProductsListViewController: ConfigureCollectionView, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return products.count
+        return viewModel.products.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let collection = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductsCell", for: indexPath) as? ProductsCollectionViewCell
-        let product = products[indexPath.row]
+        let product = viewModel.products[indexPath.row]
         collection?.setCollectionView(product: product)
         return collection!
     }
@@ -71,16 +41,16 @@ extension ProductsListViewController: UICollectionViewDataSource, UICollectionVi
         return CGSize(width: UIScreen.width * 0.4, height: UIScreen.height * 0.43)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let choisenProduct = products[indexPath.row]
+        let choisenProduct = viewModel.products[indexPath.row]
         guard let productID = choisenProduct.id else {
             return
         }
-        makePush(toView: DetailsViewController(productID: productID))
+     //   makePush(toView: DetailsViewController(productID: productID))
     }
 
 }
-extension ProductsListViewController: ProductsListInterface {
-    func snapkitConfigure() {
+extension ProductsListViewController {
+    func setSnapkit() {
         self.denemeBtn.snp.makeConstraints { make in
             make.top.equalTo(self.headerLabel.snp.bottom).offset(16)
             make.right.equalToSuperview().offset(-16)
@@ -98,14 +68,14 @@ extension ProductsListViewController: ProductsListInterface {
         child.view.frame = view.frame
         view.addSubview(child.view)
         child.didMove(toParent: self)
-        self.denemeBtn.addTarget(self, action: #selector(tappedbtn), for: .touchUpInside)
+        self.denemeBtn.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         self.denemeBtn.setImage(UIImage(named: "filter_icon"), for: .normal)
     }
-    func onDoneButtonTappeds() {
+   @objc func onDoneButtonTappeds() {
         toolBar.removeFromSuperview()
         picker.removeFromSuperview()
     }
-    func buttonTapped() {
+   @objc func buttonTapped() {
         picker = UIPickerView.init()
         picker.delegate = self
         picker.dataSource = self
@@ -117,7 +87,7 @@ extension ProductsListViewController: ProductsListInterface {
         self.view.addSubview(picker)
         toolBar = UIToolbar.init(frame: CGRect.init(x: 0.0, y: UIScreen.main.bounds.size.height - 300, width: UIScreen.main.bounds.size.width, height: 50))
         toolBar.barStyle = .black
-        toolBar.items = [UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(onDoneButtonTapped))]
+        toolBar.items = [UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(onDoneButtonTappeds))]
         self.view.addSubview(toolBar)
     }
     func collectionViewConfigure() {
@@ -131,56 +101,11 @@ extension ProductsListViewController: ProductsListInterface {
     }
     func viewDidloadConfigure() {
         view.addSubviews(productsCollectionView, denemeBtn)
-        collectionViewRegister()
+        collectionViewConfigure()
+        styleConfigure()
         setSnapkit()
-        applyStyle()
-        viewModel.getProductForAnCategory(with: .productForAnCategorySortTitle(categoryId: categoryID))
-
-    }
-    func getProducts(data: ProductForAnCategory) {
-        guard let data = data.data else {
-            return
-        }
-        self.products = data
-        if selected == "Alfabetik A-Z" {
-            var products = [SingleProductModel]()
-            self.products.reversed().forEach {
-                products.append($0)
-            }
-            self.products = products
-
-        } else if selected == "Fiyat Artan" {
-            var products = [SingleProductModel]()
-            self.products.reversed().forEach {
-                products.append($0)
-            }
-            self.products = products
-        } else if selected == "Eskiden Yeniye" {
-            var products = [SingleProductModel]()
-            self.products.reversed().forEach {
-                products.append($0)
-            }
-            self.products = products
-        }
-
-        if !products.isEmpty {
-            DispatchQueue.main.async {
-                self.productsCollectionView.reloadData()
-                self.stopAndHideSpinner()
-            }
-        }
     }
 }
-extension ProductsListViewController: ViewModelGetProductFetchDelegate {
-    func didFinishedGetProductForAnCategory(data: ProductForAnCategory) {
-        viewModel.didFinishedGetProductForAnCategory(data: data)
-    }
-
-    func didErrorGetProductForAnCategory(error: CustomError) {
-        viewModel.didErrorGetProductForAnCategory(error: error)
-    }
-}
-
 extension ProductsListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -199,14 +124,14 @@ extension ProductsListViewController: UIPickerViewDelegate, UIPickerViewDataSour
         selected = filterValues[row]
         if selected == "Alfabetik A-Z" || selected == "Alfabetik Z-A"
         {
-            viewModel.getProductForAnCategory(with: .productForAnCategorySortTitle(categoryId: categoryID))
+            viewModel.getProductCategory(requestType: .productForAnCategorySortTitle(categoryId: viewModel.categoryID))
         } else if selected == "Fiyat Artan" || selected == "Fiyat Azalan" {
-            viewModel.getProductForAnCategory(with: .productForAnCategorySortPrice(categoryId: categoryID))
+            viewModel.getProductCategory(requestType: .productForAnCategorySortPrice(categoryId: viewModel.categoryID))
         } else if selected == "Yeniden Eskiye" || selected == "Eskiden Yeniye" {
-            viewModel.getProductForAnCategory(with: .productForAnCategorySortPublishmentDate(categoryId: categoryID))
+            viewModel.getProductCategory(requestType: .productForAnCategorySortPublishmentDate(categoryId: viewModel.categoryID))
         }
         else {
-            viewModel.getProductForAnCategory(with: .productForAnCategorySortTitle(categoryId: categoryID))
+            viewModel.getProductCategory(requestType: .productForAnCategorySortTitle(categoryId: viewModel.categoryID))
         }
 
     }

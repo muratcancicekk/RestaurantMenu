@@ -7,67 +7,56 @@
 
 import Foundation
 import UIKit
-protocol ViewModelGetProductDelegate: AnyObject {
-    var view: ProductsListInterface? { get set }
-    func didFinishedGetProductForAnCategory(data: ProductForAnCategory)
-    func didErrorGetProductForAnCategory(error: CustomError)
-    func viewDidload()
-    func collectionViewRegister()
-    func tappedbtn()
-    func onDoneButtonTapped()
-    func applyStyle()
-    func setSnapkit()
-}
-protocol ViewModelGetProductFetchDelegate {
-    func didFinishedGetProductForAnCategory(data: ProductForAnCategory)
-    func didErrorGetProductForAnCategory(error: CustomError)
-}
+
+
 enum ProductListViewState {
-    
+    case productListDidLoad
 }
 class ProductListViewModel: BaseViewModel {
-    var delegate: ViewModelGetProductFetchDelegate?
-    var view: ProductsListInterface?
-
-    func getProductForAnCategory(with resquestType: RequestType) {
-        Network.shared.request(with: resquestType) { [weak self] (response: Result<ProductForAnCategory, CustomError>) in
-            guard let self = self else { return }
-            switch response {
-            case .success(let success):
-                self.delegate?.didFinishedGetProductForAnCategory(data: success)
-            case .failure(let failure):
-                self.delegate?.didErrorGetProductForAnCategory(error: failure)
+    lazy var service = Service()
+    var products = [SingleProductModel]()
+    var categoryID: String
+    init(categoryID: String) {
+        self.categoryID = categoryID
+    }
+    override func start() {
+        getProductCategory(requestType: .productForAnCategorySortTitle(categoryId: categoryID))
+    }
+    func getProductCategory(requestType: RequestType) {
+        service.getAllProductCategory(requestType: requestType) { [weak self] product in
+            if let product = product?.data {
+                self?.products = product
+                self?.changeState(to: ProductListViewState.productListDidLoad)
             }
+        } failure: { [weak self] error in
+            self?.handleError(error: error)
         }
-    }
-}
 
-extension ProductListViewModel: ViewModelGetProductDelegate {
-    func setSnapkit() {
-        view?.snapkitConfigure()
     }
-    func applyStyle() {
-        view?.styleConfigure()
-    }
-    func onDoneButtonTapped() {
-        view?.onDoneButtonTappeds()
-    }
-    func tappedbtn() {
-        view?.buttonTapped()
-    }
-    func collectionViewRegister() {
-        view?.collectionViewConfigure()
-    }
-    func didFinishedGetProductForAnCategory(data: ProductForAnCategory) {
-        view?.getProducts(data: data)
-    }
-
-    func didErrorGetProductForAnCategory(error: CustomError) {
-        print(error)
-    }
-
-    func viewDidload() {
-        view?.viewDidloadConfigure()
-
+    func getProducts(data: ProductForAnCategory, selected: String) {
+        guard let data = data.data else {
+            return
+        }
+        self.products = data
+        if selected == "Alfabetik A-Z" {
+            var products = [SingleProductModel]()
+            self.products.reversed().forEach {
+                products.append($0)
+            }
+            self.products = products
+            
+        } else if selected == "Fiyat Artan" {
+            var products = [SingleProductModel]()
+            self.products.reversed().forEach {
+                products.append($0)
+            }
+            self.products = products
+        } else if selected == "Eskiden Yeniye" {
+            var products = [SingleProductModel]()
+            self.products.reversed().forEach {
+                products.append($0)
+            }
+            self.products = products
+        }
     }
 }

@@ -25,14 +25,6 @@ class DetailsViewController: AppnomiBaseViewController<DetailsViewModel, Details
     private let descriptionLabel = UILabel()
     private let stockIcon = UIImageView()
     private let stockLabel = UILabel()
-    private let viewModel = DetailsViewModel()
-
-    let productID: String
-    init(productID: String) {
-        self.productID = productID
-        super.init(nibName: nil, bundle: nil)
-
-    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -139,7 +131,6 @@ extension DetailsViewController: DetailsViewInterface {
         scroll()
         applyStyle()
         setSnapkit()
-        viewModel.getSingleProduct(productId: productID)
     }
 }
 

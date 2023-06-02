@@ -8,71 +8,20 @@
 import Foundation
 import UIKit
 
-protocol ViewModelAllCategoriesDelegate {
-    var view: HomePageInterface? {
-        get set
-    }
-    func collectionViewRegister()
-    func didFinishedGetAllCategories(data: CategoriesModel)
-    func didErrorGetAllCategories(error: CustomError)
-    func viewDidLoad()
-    func setSnapkit()
-    func applyStyle()
-    func didSelectItemAt(collectionView: UICollectionView, at indexPath: IndexPath)
-}
-protocol ViewModelHomePageDelegate {
-    func didFinishedGetAllCategories(data: CategoriesModel)
-    func didErrorGetAllCategories(error: CustomError)
-}
 enum HomePageViewState {
-    
+    case homeDidLoad
 }
 class HomePageViewModel: BaseViewModel {
 
-    weak var view: HomePageInterface?
-    var delegate: ViewModelHomePageDelegate?
-    func getallCategories() {
-        Network.shared.request(with: .categories) { [weak self] (response: Result<CategoriesModel, CustomError>) in
-            guard let self = self else { return }
-            switch response {
-            case .success(let success):
-                self.delegate?.didFinishedGetAllCategories(data: success)
-            case .failure(let failure):
-                self.delegate?.didErrorGetAllCategories(error: failure)
-            }
+    lazy var homeService = Service()
+    var categories = [Categories]()
+    override func start() {
+        homeService.getallCategories { [weak self] categories in
+            guard let categories = categories?.data else {return }
+            self?.categories = categories
+            self?.changeState(to: HomePageViewState.homeDidLoad)
+        } failure: { [weak self] error in
+            self?.handleError(error: error)
         }
-    }
-
-}
-extension HomePageViewModel: ViewModelAllCategoriesDelegate {
-    func didSelectItemAt(collectionView: UICollectionView, at indexPath: IndexPath) {
-        let collection = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCategoryCell", for: indexPath) as? CategoryCollectionViewCell
-        collection?.isSelected.toggle()
-        print(indexPath.row)
-    }
-
-    func applyStyle() {
-        view?.applyStyleConfigure()
-    }
-
-    func setSnapkit() {
-        view?.snapkitConfigure()
-    }
-
-    func viewDidLoad() {
-        view?.viewDidLoadConfigure()
-    }
-
-    func collectionViewRegister() {
-        view?.prepareCollectionView()
-
-    }
-
-    func didFinishedGetAllCategories(data: CategoriesModel) {
-        view?.fetchData(data: data)
-
-    }
-
-    func didErrorGetAllCategories(error: CustomError) {
     }
 }

@@ -53,7 +53,6 @@ struct Network {
                 completion(.success(decodedResponse))
             }
             catch let error {
-                print("denemeee",String(describing: error))
                 completion(.failure(CustomError(message: error.localizedDescription)))
             }
 

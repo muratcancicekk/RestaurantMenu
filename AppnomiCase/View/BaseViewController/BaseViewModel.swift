@@ -22,20 +22,11 @@ class BaseViewModel {
         self.state = self
     }
 
-    func handleError(error: NetworkError? = nil, message: String? = nil) {
+    func handleError(error: CustomError? = nil, message: String? = nil) {
         if let message = message {
             errorMessageHandler?(message)
         } else if let error = error {
-            switch error {
-            case .serverFailure(let message),
-                 .noJSONData(let message),
-                 .unknown(let message),
-                 .requestFailure(let message),
-                 .processNotAccepted(let message):
-                errorMessageHandler?(message)
-            case .userNotExist(let message):
-                errorMessageHandler?(message)
-            }
+            errorMessageHandler?(message ?? "")
         }
     }
 }
