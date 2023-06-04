@@ -29,12 +29,9 @@ class AppnomiBaseViewController<T: BaseViewModel, S>: UIViewController, AlertSho
             }
         }
     }
-    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubviews(headerLabel, logo)
@@ -46,7 +43,6 @@ class AppnomiBaseViewController<T: BaseViewModel, S>: UIViewController, AlertSho
     func bind() {}
 
     func didStateChanged(oldState: S?, newState: S) {}
-    
     private func applyStyle() {
         headerLabel.styleLabel(title: "Appnomi",
                                textAlignment: .center,
@@ -66,15 +62,12 @@ class AppnomiBaseViewController<T: BaseViewModel, S>: UIViewController, AlertSho
 
         }
     }
-    func makePush(toView: UIViewController)
-    {
-        self.navigationController?.pushViewController(toView, animated: true)
-      
+    func makePush(toView: UIViewController) {
+    self.navigationController?.pushViewController(toView, animated: true)
     }
     func makePop() {
         self.navigationController?.popViewController(animated: true)
     }
-
     func stopAndHideSpinner() {
         child.willMove(toParent: nil)
         child.view.removeFromSuperview()

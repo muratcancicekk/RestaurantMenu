@@ -15,13 +15,22 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     let iconView = UIImageView()
     override func awakeFromNib() {
         super.awakeFromNib()
-        addSubviews(titleLabel,rigthIconView,subLabel,iconView)
+        addSubviews(titleLabel,
+                    rigthIconView,
+                    subLabel,
+                    iconView)
         applyStyle()
         setSnapkit()
     }
-    private func applyStyle(){
-        titleLabel.styleLabel(title: "CategoryRandomTitle", textAlignment: .left, color: .black, fontSize: UIFont.systemFont(ofSize: 16))
-        subLabel.styleLabel(title: "SubLabel", textAlignment: .left, color: .lightGray, fontSize: UIFont.systemFont(ofSize: 14))
+    private func applyStyle() {
+        titleLabel.styleLabel(title: "CategoryRandomTitle",
+                              textAlignment: .left,
+                              color: .black,
+                              fontSize: UIFont.systemFont(ofSize: 16))
+        subLabel.styleLabel(title: "SubLabel",
+                            textAlignment: .left,
+                            color: .lightGray,
+                            fontSize: UIFont.systemFont(ofSize: 14))
         rigthIconView.image = UIImage(named: "path_icon")
         rigthIconView.contentMode = .center
         iconView.image = UIImage(named: "path_icon")
@@ -29,7 +38,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         self.borderColor = .lightGray
         self.cornerRadius = 8
     }
-    private func setSnapkit(){
+    private func setSnapkit() {
         iconView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(8)
             make.top.equalToSuperview().offset(8)
@@ -52,7 +61,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
 
         }
     }
-    func setCollectionView(category:Categories){
+    func setCollectionView(category: Categories) {
         self.subLabel.text = "Toplam Ürün Sayısı: \(category.totalProducts ?? 0)"
         self.iconView.setImage(with: category.icon)
         self.titleLabel.text = category.name

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct SingleProductModel: Codable {
+struct ProductDetails: Codable {
     let id, appID: String?
     let category: Category?
     let categoryID: String?

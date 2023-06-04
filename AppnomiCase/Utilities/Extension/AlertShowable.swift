@@ -18,4 +18,3 @@ extension AlertShowable where Self: UIViewController {
         self.present(alert, animated: true)
     }
 }
-

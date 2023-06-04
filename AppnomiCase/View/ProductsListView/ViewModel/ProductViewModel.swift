@@ -14,7 +14,7 @@ enum ProductListViewState {
 }
 class ProductListViewModel: BaseViewModel {
     lazy var service = Service()
-    var products = [SingleProductModel]()
+    var products = [ProductDetails]()
     var categoryID: String
     init(categoryID: String) {
         self.categoryID = categoryID
@@ -39,20 +39,20 @@ class ProductListViewModel: BaseViewModel {
         }
         self.products = data
         if selected == "Alfabetik A-Z" {
-            var products = [SingleProductModel]()
+            var products = [ProductDetails]()
             self.products.reversed().forEach {
                 products.append($0)
             }
             self.products = products
             
         } else if selected == "Fiyat Artan" {
-            var products = [SingleProductModel]()
+            var products = [ProductDetails]()
             self.products.reversed().forEach {
                 products.append($0)
             }
             self.products = products
         } else if selected == "Eskiden Yeniye" {
-            var products = [SingleProductModel]()
+            var products = [ProductDetails]()
             self.products.reversed().forEach {
                 products.append($0)
             }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SingleProductDetailModel: Codable {
+struct ProductDetailModel: Codable {
     let success: Bool?
-    let data: SingleProductModel?
+    let data: ProductDetails?
 }
