@@ -7,46 +7,47 @@
 
 import Foundation
 
+// MARK: - NetworkError
+enum NetworkError {
+    case requestFailure(String)
+    case unknown(String)
+    case noJSONData(String)
+    case serverFailure(String)
+    case userNotExist(String)
+    case processNotAccepted(String)
+}
+
 struct Network {
     static let shared = Network()
-
-    private let baseUrlString = "https://api.shopiroller.com/v2.0"
-
+    private let baseUrlString = Constants.baseURL
     func request<T: Decodable>(with type: RequestType, completion: @escaping (Result<T, CustomError>) -> Void) {
-
         guard let url = URL(string: baseUrlString + type.endPoint) else {
-            Logger.log(text: "url oluşturulamadı!")
+            Logger.log(text: "Failed to create url")
             return
         }
         let headers = [
-                   "Api-Key": "xXspnfUxPzOGKNu90bFAjlOTnMLpN8veiixvEFXUw9I=",
-                   "Alias-Key": "AtS1aPFxlIdVLth6ee2SEETlRxk=",
-               ]
-        Logger.log(text:"pop2" + baseUrlString + type.endPoint)
+            "Api-Key": Constants.apiKey,
+            "Alias-Key": Constants.aliasKey,
+        ]
+        Logger.log(text:"** Request URL: " + baseUrlString + type.endPoint)
         var request = URLRequest(url: url)
         request.httpMethod = type.httpMethod.rawValue
         request.allHTTPHeaderFields = headers
         let session = URLSession.shared
-
         session.dataTask(with: request) { data, response, error in
-
             guard let data = data else {
-                completion(.failure(CustomError(message: "data oluşturulamadı")))
+                completion(.failure(CustomError(message: "Failed to create data")))
                 return
             }
             Logger.log(type: .info, text: String(data: data, encoding: .utf8.self) ?? "")
-
             let decoder = JSONDecoder()
-
             do {
                 let decodedResponse = try decoder.decode(T.self, from: data)
                 completion(.success(decodedResponse))
             }
             catch let error {
-                print("denemeee",String(describing: error))
                 completion(.failure(CustomError(message: error.localizedDescription)))
             }
-
         }.resume()
     }
 }

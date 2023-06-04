@@ -57,7 +57,7 @@ class ProductsCollectionViewCell: UICollectionViewCell {
         }
 
     }
-    func setCollectionView(product: SingleProductModel) {
+    func setCollectionView(product: ProductDetails) {
         if product.campaignPrice != nil {
             let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: (product.price?.toString ?? "") + "$")
             attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSRange(location: 0, length: attributeString.length))

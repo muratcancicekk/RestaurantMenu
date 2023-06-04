@@ -7,15 +7,11 @@
 
 import Foundation
 enum RequestType {
-
     case categories
     case productForAnCategorySortTitle(categoryId: String)
     case productForAnCategorySortPrice(categoryId: String)
     case productForAnCategorySortPublishmentDate(categoryId: String)
     case productDetail(productId: String)
-
-
-
     var endPoint: String {
 
         switch self {
@@ -30,24 +26,19 @@ enum RequestType {
         case .productDetail(productId: let productId):
             return "/products/" + productId
         }
-
-       
     }
     var httpMethod: HttpMethod {
-
         switch self {
-     
         case .categories:
             return .GET
-        case .productForAnCategorySortTitle(categoryId: _):
+        case .productForAnCategorySortTitle:
             return .GET
-        case .productForAnCategorySortPrice(categoryId:  _):
+        case .productForAnCategorySortPrice:
             return .GET
-        case .productForAnCategorySortPublishmentDate(categoryId: _):
+        case .productForAnCategorySortPublishmentDate:
             return .GET
-        case .productDetail(productId: _):
+        case .productDetail:
             return .GET
-    
         }
     }
 }

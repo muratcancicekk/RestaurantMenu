@@ -8,6 +8,6 @@
 import Foundation
 struct ProductForAnCategory: Codable {
     let success: Bool?
-    let data: [SingleProductModel]?
+    let data: [ProductDetails]?
     let meta: Meta?
 }
