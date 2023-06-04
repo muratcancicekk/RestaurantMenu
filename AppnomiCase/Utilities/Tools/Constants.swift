@@ -7,7 +7,7 @@
 
 import Foundation
 struct Constants {
-    static let baseURL = "Failed to create data"
+    static let baseURL = "https://api.shopiroller.com/v2.0"
     static let apiKey = "xXspnfUxPzOGKNu90bFAjlOTnMLpN8veiixvEFXUw9I="
     static let aliasKey = "AtS1aPFxlIdVLth6ee2SEETlRxk="
 }

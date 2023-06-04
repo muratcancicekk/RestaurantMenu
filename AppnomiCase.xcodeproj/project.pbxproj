@@ -200,7 +200,7 @@
 				A853067528C9F014009B5041 /* Utilities */,
 				A853067428C9F004009B5041 /* Delegate */,
 				A853067328C9EFEB009B5041 /* Stroyboards */,
-				A853067228C9EFDA009B5041 /* View */,
+				A853067228C9EFDA009B5041 /* Controllers */,
 				A853067128C9EFC7009B5041 /* Model */,
 				A853067028C9EFBE009B5041 /* Network */,
 				A853066028C9EF9E009B5041 /* ViewController.swift */,
@@ -237,7 +237,7 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		A853067228C9EFDA009B5041 /* View */ = {
+		A853067228C9EFDA009B5041 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				A841C37C28CE7C7E00AFBEC0 /* SpinnerView */,
@@ -246,7 +246,7 @@
 				A853068328C9F1EE009B5041 /* BaseViewController */,
 				A853067728C9F044009B5041 /* HomePageView */,
 			);
-			path = View;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		A853067328C9EFEB009B5041 /* Stroyboards */ = {
